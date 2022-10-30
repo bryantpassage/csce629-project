@@ -14,6 +14,7 @@ private:
 public:
     HEAP_TEST(int);
     bool test_heap_sequential();
+    void print_heap();
 };
 
 #endif
