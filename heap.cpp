@@ -99,14 +99,7 @@ void Max_Heap::Insert(int v, int value)
     P[v] = size;
 
     // up heapify to fix the heap
-    int current_p = size;
-    int parent = static_cast<int>(floor((current_p - 1) / 2));  // round down index
-    while (D[H[current_p]] > D[H[parent]])
-    {
-        swap(H[current_p], H[parent]);
-        current_p = parent;
-        parent = static_cast<int>(floor((current_p - 1) / 2));
-    }
+    heapify_up(size);
 
     size++;
 }
