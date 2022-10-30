@@ -91,6 +91,26 @@ bool HEAP_TEST::test_heap_sequential()
         return false;
     }
 
+    // add 25 more pre-determined values
+    for (unsigned long i = end_heap_size; i < end_heap_size+25; i++)
+    {
+        int r_value = rand() % end_heap_size;   // insert random value that may already be in heap
+        D.push_back(r_value);
+        P.push_back(-1);
+        Insert(i, r_value);
+    }
+    // check heap validity
+    try
+    {
+        check_heap_validity();
+    }
+    catch (std::exception &e)
+    {
+        std::cerr << e.what() << std::endl;
+        std::cout << "Failed test_heap_sequential at random deletion" << std::endl;
+        return false;
+    }
+
     return true;
 }
 
