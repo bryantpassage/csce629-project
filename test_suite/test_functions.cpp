@@ -60,10 +60,11 @@ bool HEAP_TEST::test_heap_sequential()
         return false;
     }
 
-    // delete 3 random values
+    // delete 20% random values
+    int n_delete = static_cast<int>(end_heap_size * 0.2);
     std::vector<int> hash(end_heap_size);
-    int random_numbers[3];
-    for (int d = 0; d < 3; d++)
+    int random_numbers[n_delete];
+    for (int d = 0; d < n_delete; d++)
     {
         int r;
         do
@@ -73,7 +74,7 @@ bool HEAP_TEST::test_heap_sequential()
         hash[r] = 1;
         random_numbers[d] = r;        
     }
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < n_delete; i++)
     {
         Delete(random_numbers[i]);
     }
