@@ -14,6 +14,7 @@ protected:
     unsigned long size;
     void swap(int, int);
     void heapify(int);
+    void heapify_up(int);
 public:
     Max_Heap();
     Max_Heap(int);

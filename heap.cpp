@@ -34,9 +34,9 @@ void Max_Heap::heapify(int p)
     // check if left child is larger than root i
     // remember to check value at D
     unsigned long largest = p;
-    largest = (D[H[left]] > D[H[p]] && left < size) ? left : p;
+    largest = (left<size && D[H[left]]>D[H[p]]) ? left : p;
     // check if right child is larger than root i or left child
-    if (D[H[right]] > D[H[largest]] && right < size) largest = right;
+    if (right<size && D[H[right]]>D[H[largest]]) largest = right;
 
     // if the largest is not the root, exchange and call recursively
     if (largest != static_cast<unsigned long>(p))
@@ -47,11 +47,27 @@ void Max_Heap::heapify(int p)
     }
 }
 
+/* Helper function to revalidate heap structure
+(Usually after delete operation) */
+void Max_Heap::heapify_up(int p)
+{
+    // up heapify to fix the heap
+    int current_p = p;
+    int parent = static_cast<int>(floor((current_p - 1) / 2)); // round down index
+    while (D[H[current_p]] > D[H[parent]])
+    {
+        swap(H[current_p], H[parent]);
+        current_p = parent;
+        parent = static_cast<int>(floor((current_p - 1) / 2));
+    }
+}
+
 /* Function to Delete vertex from heap 
    Argument v is the vertex to delete
 */
 void Max_Heap::Delete(int v)
 {
+    if (P[v] == -1) throw std::runtime_error("Vertex v not in heap");
     // retrieve last vertex in heap
     int last_vertex = H[size-1];
     // swap the last element in heap with v
@@ -60,11 +76,15 @@ void Max_Heap::Delete(int v)
     H.pop_back();   // just in case
     if (size != H.size()) throw std::runtime_error("Max_Heap variable \"size\" does not match vector H's size()!");
 
-    // invalidate index P[v]
+    // invalidate index P[v] and remove data D[v]
     P[v] = -1;
+    D[v] = -1;
 
     // reconstruct/revalidate heap
-    heapify(P[last_vertex]);
+    if (D[last_vertex] > D[v])
+        heapify_up(P[last_vertex]);
+    else
+        heapify(P[last_vertex]);
 }
 
 /* Function that returns max of heap H */
