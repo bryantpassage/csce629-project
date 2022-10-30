@@ -76,15 +76,15 @@ void Max_Heap::Delete(int v)
     H.pop_back();   // just in case
     if (size != H.size()) throw std::runtime_error("Max_Heap variable \"size\" does not match vector H's size()!");
 
-    // invalidate index P[v] and remove data D[v]
-    P[v] = -1;
-    D[v] = -1;
-
     // reconstruct/revalidate heap
     if (D[last_vertex] > D[v])
         heapify_up(P[last_vertex]);
     else
         heapify(P[last_vertex]);
+
+    // invalidate index P[v] and remove data D[v]
+    P[v] = -1;
+    D[v] = -1;
 }
 
 /* Function that returns max of heap H */
