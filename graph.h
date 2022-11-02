@@ -15,12 +15,16 @@ public:
 
 class Graph
 {
-private:
+public:
     std::vector<std::vector<Edge>> adj_list;
+    std::vector<int> visited;
     unsigned long num_vertex, num_edges;
 public:
     Graph(int);
+    void clear_visited();
     void addEdge(int, int, int);
+    bool removeEdge(int, int);
+    void printGraph();
 };
 
 
