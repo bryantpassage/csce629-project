@@ -60,3 +60,75 @@ void Graph::printGraph()
         std::cout << "]" << std::endl;
     }
 }
+
+// create a cycle in graph to enforce connectivity
+void Graph::createCycle()
+{
+    std::vector<int> random_num(num_vertex-1);
+    for (unsigned long j = 0; j < random_num.size(); j++)
+    {
+        random_num[j] = j+1;
+    }
+
+    int current_vertex = 0;
+    for (unsigned long i = 1; i < num_vertex; i++)
+    {
+        int r_n_pos = rand() % random_num.size();
+        int next_vertex = random_num[r_n_pos];
+        
+        addEdge(current_vertex, next_vertex, rand() % 1000);
+        random_num.erase(random_num.begin() + r_n_pos);
+        current_vertex = next_vertex;
+    }
+
+    // connect last vertex back to 0
+    addEdge(current_vertex, 0, rand() % 1000);
+}
+
+// create a graph with average vertex degree of 6
+// FIXME
+double Graph::createG1()
+{
+    std::vector<std::vector<int>> adj_mat(num_vertex, std::vector<int>(num_vertex, 0));
+    for (unsigned long i = 0; i < num_vertex; i++)
+    {
+        adj_mat[i][i] = 1;
+    }
+
+    // go through adj list and update temp adj matrix
+    for (unsigned long i = 0; i < adj_list.size(); i++)
+    {
+        for (unsigned long j = 0; j < adj_list[i].size(); j++)
+        {
+            adj_mat[i][adj_list[i][j].v] = 1;
+        }
+    }
+
+    // go through each element in adj matrix and have 6/num_vertex chance of connecting two vertices
+    int r_chance = static_cast<int>(6.0 * 10000 / num_vertex);
+    for (unsigned long i = 0; i < adj_mat.size(); i++)
+    {
+        for (unsigned long j = 0; j < adj_mat.size(); j++)
+        {
+            if (rand() % 10000 < r_chance)
+            {
+                if (adj_mat[i][j] != 1)
+                {
+                    addEdge(i, j, rand() % 1000);
+                    adj_mat[i][j] = 1;
+                    adj_mat[j][i] = 1;
+                }
+            }
+        }
+    }
+
+    // calculate and return average degree
+    double total_edges = 0;
+    for (unsigned long i = 0; i < adj_list.size(); i++)
+    {
+        int num_adj_vertices = adj_list[i].size();
+        total_edges += num_adj_vertices;
+    }
+
+    return total_edges / adj_list.size();
+}

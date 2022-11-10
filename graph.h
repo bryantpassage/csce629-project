@@ -25,6 +25,9 @@ public:
     void addEdge(int, int, int);
     bool removeEdge(int, int);
     void printGraph();
+
+    void createCycle();
+    double createG1();
 };
 
 
