@@ -42,4 +42,9 @@ int main(int argc, char* argv[])
         std::cout << "[FATAL] Failed test_graph_sequential test" << std::endl;
         g_test.uut.printGraph();
     }
+
+    GRAPH_TEST g_cycle(5000);
+    g_cycle.uut.createCycle();
+    std::cout << "Average degree = " << g_cycle.uut.createG1() << std::endl;
+    // g_cycle.uut.printGraph();
 }

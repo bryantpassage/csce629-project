@@ -197,6 +197,7 @@ bool GRAPH_TEST::test_graph_sequential()
         std::cerr << e.what() << '\n';
         passed = false;
     }
+
     return passed;
 }
 
