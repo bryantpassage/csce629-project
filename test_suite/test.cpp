@@ -43,8 +43,18 @@ int main(int argc, char* argv[])
         g_test.uut.printGraph();
     }
 
+    std::cout << "Creating graph module with 5000 vertices" << std::endl;
     GRAPH_TEST g_cycle(5000);
     g_cycle.uut.createCycle();
-    std::cout << "Average degree = " << g_cycle.uut.createG1() << std::endl;
+    double avg_degree = g_cycle.uut.createG1();
+    if (avg_degree >= 5 && avg_degree <= 7)
+    {
+        std::cout << "Graph G1 satisfies requirement of average degree around 6" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FATAL] Graph G1 does not have average degree around 6" << std::endl;
+    }
+    std::cout << "Average degree = " << avg_degree << std::endl;
     // g_cycle.uut.printGraph();
 }
