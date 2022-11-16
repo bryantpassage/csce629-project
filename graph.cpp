@@ -105,10 +105,10 @@ double Graph::createG1()
     }
 
     // go through each element in adj matrix and have 6/num_vertex chance of connecting two vertices
-    int r_chance = static_cast<int>(6.0 * 10000 / num_vertex);
+    int r_chance = static_cast<int>(4.0 * 10000 / num_vertex);
     for (unsigned long i = 0; i < adj_mat.size(); i++)
     {
-        for (unsigned long j = 0; j < adj_mat.size(); j++)
+        for (unsigned long j = i; j < adj_mat.size(); j++)
         {
             if (rand() % 10000 < r_chance)
             {
