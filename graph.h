@@ -28,6 +28,7 @@ public:
 
     void createCycle();
     double createG1();
+    double createG2();
 };
 
 
