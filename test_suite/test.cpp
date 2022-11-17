@@ -62,6 +62,7 @@ int main(int argc, char* argv[])
     GRAPH_TEST g2(5000);
     g2.uut.createCycle();
     avg_degree = g2.uut.createG2();
+    // g2.uut.printGraph();
     if (avg_degree >= 5000*0.18 && avg_degree <= 5000*0.22)
     {
         std::cout << "Graph G1 satisfies requirement of average degree around 20%" << std::endl;

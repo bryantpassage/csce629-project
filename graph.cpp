@@ -153,21 +153,22 @@ double Graph::createG2()
     int num_req_connections = num_vertex * 0.2;
 
     // loop through all vertex list at node i and assign edges to unconnected edges
-    for (unsigned long i = 0; i < adj_list.size(); i++)
+    for (int k = 0; k < num_req_connections; k++)
     {
-        int left_to_connect = num_req_connections - adj_list[i].size();
-        // find left_to_connect edges that are not already present in G
-        for (int j = 0; j < left_to_connect; j++)
+        for (unsigned long i = 0; i < adj_list.size(); i++)
         {
-            int rand_v;
-            do
+            if (adj_list[i].size() == static_cast<unsigned long>(k))
             {
-                rand_v = rand() % num_vertex;
-            } while (adj_mat[i][rand_v] == 1);
+                int rand_v;
+                do
+                {
+                    rand_v = rand() % num_vertex;
+                } while (adj_mat[i][rand_v] == 1);
 
-            addEdge(i, rand_v, rand()%1000);
-            adj_mat[i][rand_v] = 1;
-            adj_mat[rand_v][i] = 1;
+                addEdge(i, rand_v, rand() % 1000);
+                adj_mat[i][rand_v] = 1;
+                adj_mat[rand_v][i] = 1;
+            }
         }
     }
 
