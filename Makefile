@@ -4,8 +4,8 @@ CFLAGS = -g -Wall
 main.exe: main.o heap.o graph.o
 	$(CC) $(CFLAGS) main.o heap.o graph.o -o main.exe
 
-test_suite/test.exe: test_suite/test.o test_suite/test_functions.o heap.o graph.o
-	$(CC) $(CFLAGS) test_suite/test.o test_suite/test_functions.o heap.o graph.o -o test_suite/test.exe
+test_suite/test.exe: test_suite/test.o test_suite/test_functions.o heap.o graph.o graph_algorithms.o
+	$(CC) $(CFLAGS) test_suite/test.o test_suite/test_functions.o heap.o graph.o graph_algorithms.o -o test_suite/test.exe
 
 main.o: main.cpp heap.h
 	$(CC) $(CFLAGS) -c main.cpp -o main.o
@@ -16,7 +16,10 @@ heap.o: heap.cpp heap.h
 graph.o: graph.cpp graph.h
 	$(CC) $(CFLAGS) -c graph.cpp -o graph.o
 
-test_suite/test.o: test_suite/test.cpp test_suite/test_functions.h
+graph_algorithms.o: graph_algorithms.cpp graph_algorithms.h graph.h
+	$(CC) $(CFLAGS) -c graph_algorithms.cpp -o graph_algorithms.o
+
+test_suite/test.o: test_suite/test.cpp test_suite/test_functions.h graph_algorithms.h
 	$(CC) $(CFLAGS) -c test_suite/test.cpp -o test_suite/test.o
 
 test_suite/test_functions.o: test_suite/test_functions.cpp test_suite/test_functions.h heap.h graph.h

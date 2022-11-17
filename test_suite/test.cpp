@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include "test_functions.h"
+#include "../graph_algorithms.h"
 
 int main(int argc, char* argv[])
 {
@@ -72,4 +73,23 @@ int main(int argc, char* argv[])
         std::cout << "[FATAL] Graph G2 does not have average degree around 20%" << std::endl;
     }
     std::cout << "Average degree = " << avg_degree << std::endl;
+
+    std::cout << "Check connectivity of G1" << std::endl;
+    if (check_connectivity(g_cycle.uut, DFS))
+    {
+        std::cout << "G1 Connectivity Passed" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FATAL] Graph G1 is not fully connected" << std::endl;
+    }
+    std::cout << "Check connectivity of G2" << std::endl;
+    if (check_connectivity(g2.uut, DFS))
+    {
+        std::cout << "G2 Connectivity Passed" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FATAL] Graph G2 is not fully connected" << std::endl;
+    }
 }
