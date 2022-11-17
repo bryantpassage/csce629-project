@@ -1,8 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
+#include <string>
 #include "test_functions.h"
 #include "../heap.h"
+#include "../graph.h"
 
 HEAP_TEST::HEAP_TEST(int n) : Max_Heap(n), end_heap_size(n) {}
 
@@ -136,4 +138,70 @@ void HEAP_TEST::print_heap()
         std::cout << index << " ";
     }
     std::cout << std::endl;
+}
+
+GRAPH_TEST::GRAPH_TEST(int n) : uut(n) {}
+
+void GRAPH_TEST::check_adj_lists(std::vector<std::vector<Edge>>& correct_adj_list)
+{
+    if (uut.adj_list.size() != correct_adj_list.size()) throw std::runtime_error("Adjacency list sizes do not match!");
+
+    for (unsigned long i = 0; i < correct_adj_list.size(); i++)
+    {
+        if (uut.adj_list[i].size() != correct_adj_list[i].size()) throw std::runtime_error("Adjaceny list at vertex " + std::to_string(i) + "'s list does not match!");
+        for (unsigned long j = 0; j < correct_adj_list[i].size(); j++)
+        {
+            if (!(uut.adj_list[i][j] == correct_adj_list[i][j])) 
+            {
+                std::string uut_string = "uut edge = [ " + std::to_string(uut.adj_list[i][j].v) + "," + std::to_string(uut.adj_list[i][j].weight) + " ]";
+                std::string correct_string = "correct edge = [ " + std::to_string(correct_adj_list[i][j].v) + "," + std::to_string(correct_adj_list[i][j].weight) + " ]";
+                throw std::runtime_error("Adjacency lists do not match!\n" + uut_string + "\n" + correct_string);
+            }
+        }
+    }
+}
+
+bool GRAPH_TEST::test_graph_sequential()
+{
+    bool passed = false;
+    // add 9 edges
+    for (int i = 1; i < 10; i++)
+    {
+        uut.addEdge(0, i, i);       // add edge from v0 to vi with weight i
+    }
+    // create correct adjacency list
+    std::vector<std::vector<Edge>> correct_adjacency_list(10, std::vector<Edge>());
+    for (int i = 0; i < 10; i++)
+    {
+        if (i==0)
+        {
+            for (int j = 1; j < 10; j++)
+            {
+                correct_adjacency_list[i].push_back(Edge{j, j});
+            }
+        }
+        else
+        {
+            correct_adjacency_list[i].push_back(Edge{0, i});
+        }
+    }
+
+    // check adjacency lists
+    try
+    {
+        check_adj_lists(correct_adjacency_list);
+        passed = true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        passed = false;
+    }
+
+    return passed;
+}
+
+bool operator==(const Edge &lhs, const Edge &rhs)
+{
+    return (lhs.v == rhs.v) && (lhs.weight == rhs.weight);
 }
