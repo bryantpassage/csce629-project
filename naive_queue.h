@@ -15,4 +15,19 @@ public:
     int pop();
 };
 
+class NaiveMaxQueue : public NaiveQueue
+{
+private:
+    unsigned long argmax();
+
+public:
+    std::vector<int> values;
+
+    NaiveMaxQueue();
+    int max();
+    void push(int, int);
+    int pop();
+    void remove(int);
+};
+
 #endif

@@ -1,13 +1,33 @@
 #include <vector>
 #include <iostream>
+#include <climits>
 #include "graph_algorithms.h"
 #include "naive_queue.h"
 
 static unsigned long counter = 0;
 
+int min(int a, int b)
+{
+    return a <= b ? a : b;
+}
+
 ShortestPath::ShortestPath(const std::vector<int>& p, const int w) :
     path(p), path_weight(w) {}
 
+std::ostream& operator<<(std::ostream& os, const ShortestPath& sp)
+{
+    os << "Max BW Path: ";
+    os << "[";
+    // iterate reverse
+    for (std::vector<int>::const_reverse_iterator v_ptr = sp.path.rbegin(); v_ptr < sp.path.rend(); ++v_ptr)
+    {
+        os << " " << *v_ptr << " ";
+    }
+    os << "]" << std::endl;
+    os << "Bandwidth: " << sp.path_weight;
+
+    return os;
+}
 
 bool check_connectivity(Graph& G, void (*traverse)(const void*, const void*))
 {
@@ -72,4 +92,64 @@ void BFS(const void* G_arg, const void* v_arg)
             }
         }
     }
+}
+
+ShortestPath Naive_Dijkstras(const Graph& G, int s, int t)
+{
+    // status array
+    // 0: unseen, 1: fringe, 2: in-tree
+    std::vector<int> status(G.num_vertex, 0);
+    // dad array for back tracing
+    std::vector<int> dad(G.num_vertex, -1);
+    // bandwidth array
+    std::vector<int> bw(G.num_vertex, INT_MAX);
+    status[s] = 2;
+
+    // create Naive Max Queue
+    NaiveMaxQueue mQ;
+
+    for (Edge e : G.adj_list[s])
+    {
+        int w = e.v;
+        status[w] = 1;
+        dad[w] = s;
+        bw[w] = e.weight;
+        mQ.push(w, bw[w]);
+    }
+
+    while (!mQ.isempty())
+    {
+        int v = mQ.pop();   // max pop
+        status[v] = 2;
+        for (Edge e : G.adj_list[v])
+        {
+            int w = e.v;
+            if (status[w] == 0)
+            {
+                status[w] = 1;
+                dad[w] = v;
+                bw[w] = min(bw[v], e.weight);
+                mQ.push(w, bw[w]);
+            }
+            else if(status[w] == 1 && bw[w] < min(bw[v], e.weight))
+            {
+                mQ.remove(w);
+                dad[w] = v;
+                bw[w] = min(bw[v], e.weight);
+                mQ.push(w, bw[w]);
+            }
+        }
+    }
+
+    // backtrace from t to s
+    std::vector<int> sp;
+    int current = t;
+    while (current != s)
+    {
+        sp.push_back(current);
+        current = dad[current];
+    }
+    sp.push_back(current);
+
+    return ShortestPath(sp, bw[t]);
 }

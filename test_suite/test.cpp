@@ -92,4 +92,12 @@ int main(int argc, char* argv[])
     {
         std::cout << "[FATAL] Graph G2 is not fully connected" << std::endl;
     }
+
+    std::cout << std::endl << "Run Djikstras" << std::endl;
+    std::cout << "Graph G1 from 0 to 1" << std::endl;
+    ShortestPath g1_max_bw = Naive_Dijkstras(g_cycle.uut, 0, 1);
+    std::cout << g1_max_bw << std::endl;
+    std::cout << "Graph G2 from 0 to 1" << std::endl;
+    ShortestPath g2_max_bw = Naive_Dijkstras(g2.uut, 0, 1);
+    std::cout << g2_max_bw << std::endl;
 }
