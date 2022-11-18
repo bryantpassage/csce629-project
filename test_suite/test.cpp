@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
     std::cout << "Average degree = " << avg_degree << std::endl;
 
     std::cout << "Check connectivity of G1" << std::endl;
-    if (check_connectivity(g_cycle.uut, DFS))
+    if (check_connectivity(g_cycle.uut, DFS) && check_connectivity(g_cycle.uut, BFS))
     {
         std::cout << "G1 Connectivity Passed" << std::endl;
     }
@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
         std::cout << "[FATAL] Graph G1 is not fully connected" << std::endl;
     }
     std::cout << "Check connectivity of G2" << std::endl;
-    if (check_connectivity(g2.uut, DFS))
+    if (check_connectivity(g2.uut, DFS) && check_connectivity(g2.uut, BFS))
     {
         std::cout << "G2 Connectivity Passed" << std::endl;
     }

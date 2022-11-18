@@ -18,4 +18,6 @@ bool check_connectivity(Graph&, void (*traverse)(const void*, const void*));
 
 void DFS(const void*, const void*);
 
+void BFS(const void*, const void*);
+
 #endif

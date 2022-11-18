@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include "graph_algorithms.h"
+#include "naive_queue.h"
 
 static unsigned long counter = 0;
 
@@ -46,4 +47,29 @@ void DFS(const void* G_arg, const void* v_arg)
     }
 
     G.visited[v] = 1;
+}
+
+void BFS(const void* G_arg, const void* v_arg)
+{
+    Graph& G = *(Graph*)G_arg;
+    int v = *(int*)v_arg;
+
+    NaiveQueue Q;
+
+    G.visited[v] = 0;
+    Q.push(v);
+
+    while (!Q.isempty())
+    {
+        int w = Q.pop();
+        for (Edge e : G.adj_list[w])
+        {
+            int u = e.v;
+            if (G.visited[u] == -1)
+            {
+                G.visited[u] = G.visited[w]+1;
+                Q.push(u);
+            }
+        }
+    }
 }
