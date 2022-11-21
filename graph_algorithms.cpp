@@ -3,6 +3,7 @@
 #include <climits>
 #include "graph_algorithms.h"
 #include "naive_queue.h"
+#include "heap.h"
 
 static unsigned long counter = 0;
 
@@ -137,6 +138,67 @@ ShortestPath Naive_Dijkstras(const Graph& G, int s, int t)
                 dad[w] = v;
                 bw[w] = min(bw[v], e.weight);
                 mQ.push(w, bw[w]);
+            }
+        }
+    }
+
+    // backtrace from t to s
+    std::vector<int> sp;
+    int current = t;
+    while (current != s)
+    {
+        sp.push_back(current);
+        current = dad[current];
+    }
+    sp.push_back(current);
+
+    return ShortestPath(sp, bw[t]);
+}
+
+ShortestPath Dijkstras(const Graph &G, int s, int t)
+{
+    // status array
+    // 0: unseen, 1: fringe, 2: in-tree
+    std::vector<int> status(G.num_vertex, 0);
+    // dad array for back tracing
+    std::vector<int> dad(G.num_vertex, -1);
+    // bandwidth array
+    std::vector<int> bw(G.num_vertex, INT_MAX);
+    status[s] = 2;
+
+    // create Heap structure
+    Max_Heap H(G.num_vertex);
+
+    for (Edge e : G.adj_list[s])
+    {
+        int w = e.v;
+        status[w] = 1;
+        dad[w] = s;
+        bw[w] = e.weight;
+        H.Insert(w, bw[w]);
+    }
+
+    while (!H.isempty())
+    {
+        int v = H.Max(); // get max
+        H.Delete(v);    // remove v from heap
+        status[v] = 2;
+        for (Edge e : G.adj_list[v])
+        {
+            int w = e.v;
+            if (status[w] == 0)
+            {
+                status[w] = 1;
+                dad[w] = v;
+                bw[w] = min(bw[v], e.weight);
+                H.Insert(w, bw[w]);
+            }
+            else if (status[w] == 1 && bw[w] < min(bw[v], e.weight))
+            {
+                H.Delete(w);
+                dad[w] = v;
+                bw[w] = min(bw[v], e.weight);
+                H.Insert(w, bw[w]);
             }
         }
     }

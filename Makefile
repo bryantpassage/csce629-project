@@ -16,7 +16,7 @@ heap.o: heap.cpp heap.h
 graph.o: graph.cpp graph.h
 	$(CC) $(CFLAGS) -c graph.cpp -o graph.o
 
-graph_algorithms.o: graph_algorithms.cpp graph_algorithms.h graph.h naive_queue.h
+graph_algorithms.o: graph_algorithms.cpp graph_algorithms.h graph.h naive_queue.h heap.h
 	$(CC) $(CFLAGS) -c graph_algorithms.cpp -o graph_algorithms.o
 
 naive_queue.o: naive_queue.cpp naive_queue.h

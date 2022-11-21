@@ -5,6 +5,8 @@
 
 int main(int argc, char* argv[])
 {
+    srand(time(NULL));
+
     std::cout << "Starting testing suite..." << std::endl;
 
     // // Heap testing
@@ -66,7 +68,7 @@ int main(int argc, char* argv[])
     // g2.uut.printGraph();
     if (avg_degree >= 5000*0.18 && avg_degree <= 5000*0.22)
     {
-        std::cout << "Graph G1 satisfies requirement of average degree around 20%" << std::endl;
+        std::cout << "Graph G2 satisfies requirement of average degree around 20%" << std::endl;
     }
     else
     {
@@ -93,11 +95,21 @@ int main(int argc, char* argv[])
         std::cout << "[FATAL] Graph G2 is not fully connected" << std::endl;
     }
 
-    std::cout << std::endl << "Run Djikstras" << std::endl;
+    std::cout << std::endl << "Run Naive Dijkstras" << std::endl;
     std::cout << "Graph G1 from 0 to 1" << std::endl;
     ShortestPath g1_max_bw = Naive_Dijkstras(g_cycle.uut, 0, 1);
     std::cout << g1_max_bw << std::endl;
     std::cout << "Graph G2 from 0 to 1" << std::endl;
     ShortestPath g2_max_bw = Naive_Dijkstras(g2.uut, 0, 1);
     std::cout << g2_max_bw << std::endl;
+
+    std::cout << std::endl;
+
+    std::cout << "Run Heap Dijkstras" << std::endl;
+    std::cout << "Graph G1 from 0 to 1" << std::endl;
+    ShortestPath g1_max_bw_heap = Dijkstras(g_cycle.uut, 0, 1);
+    std::cout << g1_max_bw_heap << std::endl;
+    std::cout << "Graph G2 from 0 to 1" << std::endl;
+    ShortestPath g2_max_bw_heap = Dijkstras(g2.uut, 0, 1);
+    std::cout << g2_max_bw_heap << std::endl;
 }

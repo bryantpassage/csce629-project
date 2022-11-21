@@ -60,6 +60,7 @@ void NaiveMaxQueue::push(int v, int bw)
     size++;
 }
 
+// pop max value in queue
 int NaiveMaxQueue::pop()
 {
     if (isempty())

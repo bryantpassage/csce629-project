@@ -6,6 +6,14 @@ Max_Heap::Max_Heap() : H(std::vector<int>(0)), D(std::vector<int>(0)), P(std::ve
 
 Max_Heap::Max_Heap(int max_n) : H(std::vector<int>()), D(std::vector<int>(max_n, -1)), P(std::vector<int>(max_n, -1)), size(0){};
 
+
+// returns if heap is empty or not
+bool Max_Heap::isempty()
+{
+    return this->size < 1;
+}
+
+
 void Max_Heap::swap(int v1, int v2)
 {
     // get indices of vertex 1 and vertex 2

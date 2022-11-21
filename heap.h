@@ -21,6 +21,7 @@ public:
     void Insert(int, int);
     void Delete(int);
     int Max();
+    bool isempty();
 };
 
 #endif
