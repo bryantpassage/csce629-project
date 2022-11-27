@@ -13,10 +13,18 @@ public:
     int weight;
 };
 
+struct EdgeEdge
+{
+public:
+    int v1, v2;
+    int weight;
+};
+
 class Graph
 {
 public:
     std::vector<std::vector<Edge>> adj_list;
+    std::vector<EdgeEdge> edge_list;
     std::vector<int> visited;
     unsigned long num_vertex, num_edges;
 public:

@@ -2,8 +2,9 @@
 #include <vector>
 #include "graph.h"
 
+#define MAX_WEIGHT 100'000
 
-Graph::Graph(int n) : adj_list(std::vector<std::vector<Edge>>(n, std::vector<Edge>(0))), visited(std::vector<int>(n,-1)), num_vertex(n), num_edges(0) {}
+Graph::Graph(int n) : adj_list(std::vector<std::vector<Edge>>(n, std::vector<Edge>(0))), edge_list(std::vector<EdgeEdge>(0)), visited(std::vector<int>(n,-1)), num_vertex(n), num_edges(0) {}
 
 void Graph::clear_visited()
 {
@@ -18,6 +19,8 @@ void Graph::addEdge(int v1, int v2, int weight)
 {
     adj_list[v1].push_back(Edge{v2, weight});
     adj_list[v2].push_back(Edge{v1, weight});
+    edge_list.push_back(EdgeEdge{v1, v2, weight});
+    num_edges++;
 }
 
 // for completeness sake
@@ -75,14 +78,14 @@ void Graph::createCycle()
     {
         int r_n_pos = rand() % random_num.size();
         int next_vertex = random_num[r_n_pos];
-        
-        addEdge(current_vertex, next_vertex, rand() % 1000);
+
+        addEdge(current_vertex, next_vertex, rand() % MAX_WEIGHT);
         random_num.erase(random_num.begin() + r_n_pos);
         current_vertex = next_vertex;
     }
 
     // connect last vertex back to 0
-    addEdge(current_vertex, 0, rand() % 1000);
+    addEdge(current_vertex, 0, rand() % MAX_WEIGHT);
 }
 
 // create a graph with average vertex degree of 6
@@ -113,7 +116,7 @@ double Graph::createG1()
             {
                 if (adj_mat[i][j] != 1)
                 {
-                    addEdge(i, j, rand() % 1000);
+                    addEdge(i, j, rand() % MAX_WEIGHT);
                     adj_mat[i][j] = 1;
                     adj_mat[j][i] = 1;
                 }
@@ -165,7 +168,7 @@ double Graph::createG2()
                     rand_v = rand() % num_vertex;
                 } while (adj_mat[i][rand_v] == 1);
 
-                addEdge(i, rand_v, rand() % 1000);
+                addEdge(i, rand_v, rand() % MAX_WEIGHT);
                 adj_mat[i][rand_v] = 1;
                 adj_mat[rand_v][i] = 1;
             }

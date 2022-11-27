@@ -112,4 +112,27 @@ int main(int argc, char* argv[])
     std::cout << "Graph G2 from 0 to 1" << std::endl;
     ShortestPath g2_max_bw_heap = Dijkstras(g2.uut, 0, 1);
     std::cout << g2_max_bw_heap << std::endl;
+
+    std::cout << std::endl; 
+
+    // check ascending heapsorting algorithm on G1
+    EdgeHeapSort(g_cycle.uut);
+    for (unsigned long i = 1; i < g_cycle.uut.edge_list.size(); i++)
+    {
+        if (g_cycle.uut.edge_list[i].weight < g_cycle.uut.edge_list[i-1].weight)
+        {
+            std::cout << "[FATAL] HeapSort not correct" << std::endl;
+            std::cout << g_cycle.uut.edge_list[i].weight << " > " << g_cycle.uut.edge_list[i - 1].weight << std::endl;
+            break;
+        }
+    }
+
+    // check Kruskals
+    std::cout << "Run Kruskals Max BW" << std::endl;
+    std::cout << "Graph G1 from 0 to 1" << std::endl;
+    ShortestPath g1_max_bw_krus = Kruskals(g_cycle.uut, 0, 1);
+    std::cout << g1_max_bw_krus << std::endl;
+    std::cout << "Graph G2 from 0 to 1" << std::endl;
+    ShortestPath g2_max_bw_krus = Kruskals(g2.uut, 0, 1);
+    std::cout << g2_max_bw_krus << std::endl;
 }

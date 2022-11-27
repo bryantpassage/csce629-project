@@ -1,9 +1,12 @@
 #include <vector>
 #include <iostream>
 #include <climits>
+#include <queue>
 #include "graph_algorithms.h"
+#include "graph.h"
 #include "naive_queue.h"
 #include "heap.h"
+#include "muf.h"
 
 static unsigned long counter = 0;
 
@@ -90,6 +93,36 @@ void BFS(const void* G_arg, const void* v_arg)
             {
                 G.visited[u] = G.visited[w]+1;
                 Q.push(u);
+            }
+        }
+    }
+}
+
+void BFS_util(Graph& G, int v, int dad[], int bw[])
+{
+    // clear graph visit array
+    G.clear_visited();
+
+    std::queue<int> Q;
+
+    G.visited[v] = 0;
+    Q.push(v);
+    dad[v] = -1;
+    bw[v] = INT_MAX;
+
+    while (!Q.empty())
+    {
+        int w = Q.front();
+        Q.pop();
+        for (Edge e : G.adj_list[w])
+        {
+            int u = e.v;
+            if (G.visited[u] == -1)
+            {
+                G.visited[u] = G.visited[w] + 1;
+                Q.push(u);
+                dad[u] = w;
+                bw[u] = min(bw[w], e.weight);
             }
         }
     }
@@ -204,6 +237,117 @@ ShortestPath Dijkstras(const Graph &G, int s, int t)
     }
 
     // backtrace from t to s
+    std::vector<int> sp;
+    int current = t;
+    while (current != s)
+    {
+        sp.push_back(current);
+        current = dad[current];
+    }
+    sp.push_back(current);
+
+    return ShortestPath(sp, bw[t]);
+}
+
+bool operator>(const EdgeEdge& lhs, const EdgeEdge& rhs)
+{
+    return lhs.weight > rhs.weight;
+}
+
+void swap(std::vector<EdgeEdge>& el, int v1, int v2)
+{
+    EdgeEdge temp = el[v1];
+    el[v1] = el[v2];
+    el[v2] = temp;
+}
+
+/* Helper function to revalidate heap structure
+(Usually after delete operation)
+Make sure argument p is the index (P[v]) of a vertex */
+void heapify(std::vector<EdgeEdge> &el, int p, unsigned long size)
+{
+    // access left and right children from root i
+    unsigned long left = static_cast<int>(2 * p + 1);
+    unsigned long right = static_cast<int>(2 * p + 2);
+
+    // check if left child is larger than root i
+    // remember to check value at D
+    unsigned long largest = p;
+    largest = (left < size && el[left] > el[p]) ? left : p;
+    // check if right child is larger than root i or left child
+    if (right < size && el[right] > el[largest])
+        largest = right;
+
+    // if the largest is not the root, exchange and call recursively
+    if (largest != static_cast<unsigned long>(p))
+    {
+        // swap larger child with root
+        swap(el, largest, p);
+        heapify(el, largest, size);
+    }
+}
+
+// will give edge_list in ascending order
+void EdgeHeapSort(Graph& G)
+{
+    std::vector<EdgeEdge>& edge_list = G.edge_list;
+
+    // Build max heap
+    for (int i = edge_list.size() / 2 - 1; i >= 0; i--)
+        heapify(edge_list, i, edge_list.size());
+
+    // Heap sort
+    for (int i = edge_list.size() - 1; i >= 0; i--)
+    {
+        swap(edge_list, 0, i);
+
+        // Heapify root element to get highest element at
+        // root again
+        heapify(edge_list, 0, i);
+    }
+}
+
+ShortestPath Kruskals(Graph& G, int s, int t)
+{
+    EdgeHeapSort(G); //heap sort edges list in G
+
+    //create T graph
+    Graph T(G.num_vertex);
+
+    // create set
+    MUF set(G.num_vertex);
+    for (unsigned long v = 0; v < G.num_vertex; v++)
+    {
+        set.MakeSet((int)v);
+    }
+
+    // traverse backwards through edge list
+    // and create MST
+    for (int i = G.num_edges - 1; i >= 0; i--)
+    {
+        // std::cout << i << std::endl;
+        EdgeEdge e = G.edge_list[i];
+        int u = e.v1;
+        int v = e.v2;
+
+        // std::cout << "u=" << u << std::endl;
+        // std::cout << "v=" << v << std::endl;
+        
+        int r_u = set.Find(u);
+        int r_v = set.Find(v);
+
+        if (r_u != r_v)
+        {
+            set.Union(r_u, r_v);
+            T.addEdge(u, v, e.weight);
+        }
+    }
+
+    // use BFS to traverse through MST
+    int dad[T.num_vertex];
+    int bw[T.num_vertex];
+    for (unsigned long i = 0; i < T.num_vertex; i++) bw[i] = INT_MAX;
+    BFS_util(T, s, dad, bw);
     std::vector<int> sp;
     int current = t;
     while (current != s)
