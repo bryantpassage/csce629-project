@@ -66,6 +66,19 @@ void Graph::printGraph()
     }
 }
 
+void Graph::printProperties()
+{
+    std::cout << "Number of Vertices: " << this->num_vertex << std::endl;
+    std::cout << "Number of Edges: " << this->num_edges << std::endl;
+
+    unsigned long total_count = 0;
+    for (std::vector<Edge> vertex_list : this->adj_list)
+    {
+        total_count += vertex_list.size();
+    }
+    std::cout << "Average Degree: " << static_cast<double>(total_count) / this->adj_list.size() << std::endl;
+}
+
 // create a cycle in graph to enforce connectivity
 void Graph::createCycle()
 {

@@ -1,8 +1,8 @@
 CC = g++
 CFLAGS = -g -Wall
 
-main.exe: main.o heap.o graph.o
-	$(CC) $(CFLAGS) main.o heap.o graph.o -o main.exe
+main.exe: main.o heap.o graph.o heap.o graph.o graph_algorithms.o naive_queue.o muf.o
+	$(CC) $(CFLAGS) main.o heap.o graph.o graph_algorithms.o naive_queue.o muf.o -o main.exe
 
 test_suite/test.exe: test_suite/test.o test_suite/test_functions.o heap.o graph.o graph_algorithms.o naive_queue.o muf.o
 	$(CC) $(CFLAGS) test_suite/test.o test_suite/test_functions.o heap.o graph.o graph_algorithms.o naive_queue.o muf.o -o test_suite/test.exe
