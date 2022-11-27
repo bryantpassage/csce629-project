@@ -1,5 +1,5 @@
 #include <cstring>
-// #include <algorithm>
+#include <queue>
 #include "muf.h"
 #include "naive_queue.h"
 
@@ -52,15 +52,17 @@ void MUF::Union(int r1, int r2)
 int MUF::Find(int v)
 {
     int r = v;
-    NaiveQueue S;
+    // NaiveQueue S;
+    std::queue<int> S;
     while (dad[r] != -1)
     {
         S.push(r);
         r = dad[r];
     }
-    while (!S.isempty())
+    while (!S.empty())
     {
-        int w = S.pop();
+        int w = S.front();
+        S.pop();
         dad[w] = r;
     }
     return r;

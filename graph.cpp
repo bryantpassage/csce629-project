@@ -2,7 +2,9 @@
 #include <vector>
 #include "graph.h"
 
+#ifndef MAX_WEIGHT
 #define MAX_WEIGHT 100'000
+#endif
 
 Graph::Graph(int n) : adj_list(std::vector<std::vector<Edge>>(n, std::vector<Edge>(0))), edge_list(std::vector<EdgeEdge>(0)), visited(std::vector<int>(n,-1)), num_vertex(n), num_edges(0) {}
 

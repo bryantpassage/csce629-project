@@ -78,14 +78,16 @@ void BFS(const void* G_arg, const void* v_arg)
     Graph& G = *(Graph*)G_arg;
     int v = *(int*)v_arg;
 
-    NaiveQueue Q;
+    // NaiveQueue Q;
+    std::queue<int> Q;
 
     G.visited[v] = 0;
     Q.push(v);
 
-    while (!Q.isempty())
+    while (!Q.empty())
     {
-        int w = Q.pop();
+        int w = Q.front();
+        Q.pop();
         for (Edge e : G.adj_list[w])
         {
             int u = e.v;
