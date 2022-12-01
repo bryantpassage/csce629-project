@@ -173,9 +173,11 @@ double Graph::createG2()
     // loop through all vertex list at node i and assign edges to unconnected edges
     for (int k = 0; k < num_req_connections; k++)
     {
+        int k_save = k;
+        k += (rand() % 10 - 5);
         for (unsigned long i = 0; i < adj_list.size(); i++)
         {
-            if (adj_list[i].size() == static_cast<unsigned long>(k))
+            if (adj_list[i].size() <= static_cast<unsigned long>(k))
             {
                 int rand_v;
                 do
@@ -188,6 +190,7 @@ double Graph::createG2()
                 adj_mat[rand_v][i] = 1;
             }
         }
+        k = k_save;
     }
 
     // calculate and return average degree

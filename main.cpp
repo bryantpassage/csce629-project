@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <random>
 #include <chrono>
 #include "graph.h"
@@ -10,6 +11,10 @@ int main(int argc, char* argv[])
     std::cout << "Starting CSCE 629 Max Bandwidth Project" << std::endl;
 
     unsigned long num_vertex = 5000;
+
+    // write to csv
+    std::ofstream csv("results.csv");
+    csv << "g1_naive, g2_naive, g1_heap, g2_heap, g1_krusk, g2_krusk" << std::endl;
 
     for (int i = 0; i < 5; i++)
     {
@@ -45,6 +50,7 @@ int main(int argc, char* argv[])
             auto nD_g1_duration = std::chrono::duration_cast<std::chrono::microseconds>(nD_g1_stop - nD_g1_start);
             std::cout << nD_path_g1 << std::endl;
             std::cout << "Naive Dijkstras time on G1: " << nD_g1_duration.count() / 1e3 << " milliseconds" << std::endl;
+            csv << nD_g1_duration.count() << ",";
 
             std::cout << "Starting on G2" << std::endl;
             auto nD_g2_start = std::chrono::high_resolution_clock::now();
@@ -53,6 +59,7 @@ int main(int argc, char* argv[])
             auto nD_g2_duration = std::chrono::duration_cast<std::chrono::microseconds>(nD_g2_stop - nD_g2_start);
             std::cout << nD_path_g2 << std::endl;
             std::cout << "Naive Dijkstras time on G2: " << nD_g2_duration.count() / 1e3 << " milliseconds" << std::endl;
+            csv << nD_g2_duration.count() << ",";
 
             std::cout << std::endl;
 
@@ -64,6 +71,7 @@ int main(int argc, char* argv[])
             auto D_g1_duration = std::chrono::duration_cast<std::chrono::microseconds>(D_g1_stop - D_g1_start);
             std::cout << D_path_g1 << std::endl;
             std::cout << "Heap Dijkstras time on G1: " << D_g1_duration.count() / 1e3 << " milliseconds" << std::endl;
+            csv << D_g1_duration.count() << ",";
 
             std::cout << "Starting on G2" << std::endl;
             auto D_g2_start = std::chrono::high_resolution_clock::now();
@@ -72,6 +80,7 @@ int main(int argc, char* argv[])
             auto D_g2_duration = std::chrono::duration_cast<std::chrono::microseconds>(D_g2_stop - D_g2_start);
             std::cout << D_path_g2 << std::endl;
             std::cout << "Heap Dijkstras time on G2: " << D_g2_duration.count() / 1e3 << " milliseconds" << std::endl;
+            csv << D_g2_duration.count() << ",";
 
             std::cout << std::endl;
 
@@ -82,7 +91,8 @@ int main(int argc, char* argv[])
             auto K_g1_stop = std::chrono::high_resolution_clock::now();
             auto K_g1_duration = std::chrono::duration_cast<std::chrono::microseconds>(K_g1_stop - K_g1_start);
             std::cout << K_path_g1 << std::endl;
-            std::cout << "Naive Dijkstras time on G1: " << K_g1_duration.count() / 1e3 << " milliseconds" << std::endl;
+            std::cout << "Kruskal's time on G1: " << K_g1_duration.count() / 1e3 << " milliseconds" << std::endl;
+            csv << K_g1_duration.count() << ",";
 
             std::cout << "Starting on G2" << std::endl;
             auto K_g2_start = std::chrono::high_resolution_clock::now();
@@ -90,9 +100,11 @@ int main(int argc, char* argv[])
             auto K_g2_stop = std::chrono::high_resolution_clock::now();
             auto K_g2_duration = std::chrono::duration_cast<std::chrono::microseconds>(K_g2_stop - K_g2_start);
             std::cout << K_path_g2 << std::endl;
-            std::cout << "Naive Dijkstras time on G2: " << K_g2_duration.count() / 1e3 << " milliseconds" << std::endl;
-            
+            std::cout << "Kruskal's time on G2: " << K_g2_duration.count() / 1e3 << " milliseconds" << std::endl;
+            csv << K_g2_duration.count() << ",";
+
             std::cout << std::endl;
+            csv << std::endl;
         }
         std::cout << std::endl;
     }
